@@ -96,26 +96,35 @@ void makePlasma(const uint16_t& x, const uint16_t& y, const uint16_t& width, con
 
     uint16_t centerX = (width - 1) / 2.0 + x;
     uint16_t centerY = (height - 1) / 2.0 + y;
-    if (width > 2) {
-        setAvarage(x, y, x + width - 1, y, centerX, y);
-        setAvarage(x, y + height - 1, x + width - 1, y + height - 1, centerX, y + height - 1);
+    if (x == 0 && y == 0 && width == WINDOW_WIDTH && height == WINDOW_HEIGHT) {
+        setHSVpixel(0, centerY, std::rand() % 360, std::rand() % 50 + 50, std::rand() % 50 + 50);
+        setHSVpixel(centerX, 0, std::rand() % 360, std::rand() % 50 + 50, std::rand() % 50 + 50);
+        setHSVpixel(WINDOW_WIDTH - 1, centerY, std::rand() % 360, std::rand() % 50 + 50, std::rand() % 50 + 50);
+        setHSVpixel(centerX, WINDOW_HEIGHT - 1, std::rand() % 360, std::rand() % 50 + 50, std::rand() % 50 + 50);
+        setHSVpixel(centerX, centerY, std::rand() % 360, std::rand() % 50 + 50, std::rand() % 50 + 50);
     }
-    if (height > 2) {
-        setAvarage(x, y, x, y + height - 1, x, centerY);
-        setAvarage(x + width - 1, y, x + width - 1, y + height - 1, x + width - 1, centerY);
-    }
+    else {
+        if (width > 2) {
+            setAvarage(x, y, x + width - 1, y, centerX, y);
+            setAvarage(x, y + height - 1, x + width - 1, y + height - 1, centerX, y + height - 1);
+        }
+        if (height > 2) {
+            setAvarage(x, y, x, y + height - 1, x, centerY);
+            setAvarage(x + width - 1, y, x + width - 1, y + height - 1, x + width - 1, centerY);
+        }
 
-    if (width == 2) {
-        makePlasma(x, y, width, centerY - y + 1);
-        makePlasma(x, centerY, width, y + height - centerY);
-        return;
+        if (width == 2) {
+            makePlasma(x, y, width, centerY - y + 1);
+            makePlasma(x, centerY, width, y + height - centerY);
+            return;
+        }
+        if (height == 2) {
+            makePlasma(x, y, centerX - x + 1, height);
+            makePlasma(centerX, y, x + width - centerX, height);
+            return;
+        }
+        setAvarage(centerX, y, centerX, y + height - 1, x, centerY, x + width - 1, centerY, centerX, centerY);
     }
-    if (height == 2) {
-        makePlasma(x, y, centerX - x + 1, height);
-        makePlasma(centerX, y, x + width - centerX, height);
-        return;
-    }
-    setAvarage(centerX, y, centerX, y + height - 1, x, centerY, x + width - 1, centerY, centerX, centerY);
     makePlasma(x, y, centerX - x + 1, centerY - y + 1);
     makePlasma(centerX, y, x + width - centerX, centerY - y + 1);
     makePlasma(x, centerY, centerX - x + 1, y + height - centerY);
